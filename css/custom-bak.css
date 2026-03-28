@@ -1,0 +1,228 @@
+:root {
+  --trans-light: rgba(255, 255, 255, 0.5);
+  --trans-dark: rgba(25, 25, 25, 0.6);
+  --border-style: 1px solid rgb(169, 169, 169);
+  --backdrop-filter: blur(5px) saturate(150%);
+}
+
+/* 首页文章卡片 
+#recent-posts > .recent-post-items > .recent-post-item {
+  background: var(--trans-light) !important;
+  backdrop-filter: var(--backdrop-filter) !important;
+  border-radius: 25px;
+  border: var(--border-style);
+}
+
+.recent-post-item .recent-post-info,
+.recent-post-item .post_cover {
+  background: transparent !important;
+}
+*/
+.layout,
+#content-inner,
+#recent-posts,
+.recent-posts,
+.recent-post-items {
+  background: transparent !important;
+}
+
+/* 2. 首页文章卡片（注意：这里去掉了 > 符号，改为用空格，表示“后代元素”） */
+#recent-posts .recent-post-item,
+.recent-posts .recent-post-item {
+  background: var(--trans-light) !important;
+  backdrop-filter: var(--backdrop-filter) !important;
+  border-radius: 25px;
+  border: var(--border-style);
+}
+
+
+
+
+/* 首页侧栏卡片 */
+#aside-content .card-widget {
+  background: var(--trans-light);
+  backdrop-filter: var(--backdrop-filter);
+  border-radius: 18px;
+  border: var(--border-style);
+}
+
+/* 文章页、归档页、普通页面 */
+div#post,
+div#page,
+div#archive {
+  background: var(--trans-light);
+  backdrop-filter: var(--backdrop-filter);
+  border: var(--border-style);
+  border-radius: 20px;
+}
+
+/* 导航栏 */
+#page-header.nav-fixed #nav {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: var(--backdrop-filter);
+}
+
+[data-theme="dark"] #page-header.nav-fixed #nav {
+  background: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* 夜间模式遮罩 */
+[data-theme="dark"] #recent-posts > .recent-post-item,
+[data-theme="dark"] #aside-content .card-widget,
+[data-theme="dark"] div#post,
+[data-theme="dark"] div#archive,
+[data-theme="dark"] div#page {
+  background: var(--trans-dark);
+}
+
+
+/* 夜间模式页脚页头遮罩透明 */
+[data-theme="dark"] #footer::before {
+  background: transparent !important;
+}
+[data-theme="dark"] #page-header::before {
+  background: transparent !important;
+}
+
+/* 阅读模式 */
+.read-mode #aside-content .card-widget {
+  background: rgba(158, 204, 171, 0.5) !important;
+}
+.read-mode div#post {
+  background: rgba(158, 204, 171, 0.5) !important;
+}
+
+/* 夜间模式下的阅读模式 */
+[data-theme="dark"] .read-mode #aside-content .card-widget {
+  background: rgba(25, 25, 25, 0.9) !important;
+  color: #ffffff;
+}
+[data-theme="dark"] .read-mode div#post {
+  background: rgba(25, 25, 25, 0.9) !important;
+  color: #ffffff;
+}
+
+.layout,
+#content-inner,
+#recent-posts {
+  background: transparent !important;
+}
+
+/*
+强制首页底层背景透明，防止叠色
+#content-inner, #recent-posts {
+  background: transparent !important;
+}
+
+确保文章卡片应用最新的变量 
+#recent-posts > .recent-post-item {
+  background: var(--trans-light) !important;
+}
+*/
+
+/* 1. 卡片主容器：强制内部左右两大区块【上下绝对拉伸】填满边缘 */
+#recent-posts .recent-post-item,
+.recent-posts .recent-post-item {
+  background: var(--trans-light) !important;
+  backdrop-filter: var(--backdrop-filter) !important;
+  border-radius: 25px !important;
+  overflow: hidden !important;
+  
+  /* 用内阴影代替边框，防止亚像素漏色 */
+  border: none !important;
+  box-shadow: inset 0 0 0 1px rgba(169, 169, 169, 0.5) !important;
+  
+  /* 魔法核心：强制 Flex 子元素沿侧轴拉伸，不留上下死角 */
+  display: flex !important;
+  align-items: stretch !important; 
+  padding: 0 !important;
+}
+
+/* 2. 图片外层容器：配合父级拉伸，释放高度限制 */
+.recent-post-item .post_cover {
+  align-self: stretch !important; 
+  height: 100% !important; 
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 3. A 标签链接层：完全撑开，充当完美桥梁 */
+.recent-post-item .post_cover a {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* 4. 图片本身：完美填充，干掉 SVG 自带底色 */
+.recent-post-item .post_cover img.post-bg {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 5. 封死左右排版时的中间“三八线”亚像素缝隙 */
+.recent-post-item .post_cover.left {
+  margin-right: -1px !important;
+}
+.recent-post-item .post_cover.right {
+  margin-left: -1px !important;
+}
+
+/* 6. 清理内部文字容器可能残留的底色 */
+.recent-post-item .recent-post-info {
+  background: transparent !important;
+}
+
+
+/* 1. 命令主卡片：所有元素必须向左右两端对齐，不准留白！ */
+#recent-posts .recent-post-item,
+.recent-posts .recent-post-item {
+  justify-content: space-between !important; 
+}
+
+/* 2. 命令文字容器：像气球一样膨胀（flex: 1），主动填满所有剩余空间！ */
+/* 这股膨胀的力量会把右侧的图片容器狠狠地推到卡片的最右侧边缘 */
+.recent-post-item .recent-post-info {
+  flex: 1 !important; 
+  background: transparent !important; /* 保持透明底色不变 */
+}
+
+/* 3. （可选保险）确保右侧图片自己的外边距归零，不给自己留后路 */
+.recent-post-item .post_cover.right {
+  margin-right: 0 !important; 
+}
+
+/* 1. 恢复图片容器的黄金比例，防止被文字挤扁导致过度缩放 */
+.recent-post-item .post_cover {
+  width: 45% !important; /* 夺回 45% 的领地（你可以根据喜好改成 40% 或 50%） */
+  flex-shrink: 0 !important; /* 核心防线：宁死不屈，绝不被文字区压缩！ */
+  
+  /* 下面是保留之前的拉伸设定 */
+  align-self: stretch !important; 
+  height: 100% !important; 
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 2. 确保图片本身没有任何残留的放大代码 */
+.recent-post-item .post_cover img.post-bg {
+  transform: none !important; /* 强制清除任何可能残留的 scale() 放大效果 */
+  
+  /* 保持完美铺满 */
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
