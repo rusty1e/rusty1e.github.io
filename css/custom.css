@@ -3,8 +3,8 @@
    ========================================================= */
 
 :root {
-  --trans-light: rgba(255, 255, 255, 0.5); /* 日间模式透明度 */
-  --trans-dark: rgba(25, 25, 25, 0.6);     /* 夜间模式透明度 */
+  --trans-light: rgba(255, 255, 255, 0.4); /* 日间模式透明度 */
+  --trans-dark: rgba(25, 25, 25, 0.4);     /* 夜间模式透明度 */
   --border-style: 1px solid rgba(169, 169, 169, 0.5);
   --backdrop-filter: blur(5px) saturate(150%);
 }
@@ -150,14 +150,15 @@ div#post, div#page, div#archive {
 
 
 /* 1. 日间模式：强制使用深色（或主题色），并稍微加粗增加辨识度 */
+/*
 #aside-content .card-tag-cloud a {
-  color: #4e5958 !important; /* 强制变成深灰色，如果喜欢纯黑可以换成 #000 */ 
-  text-shadow: 0 1px 2px rgba(138, 146, 145, 0.8); /* 加一圈发光白边，防止被深色壁纸吞噬 */
-}
+  color: #4e5958 !important; 
+  text-shadow: 0 1px 2px rgba(138, 146, 145, 0.8); 
+*/
 
 /* 2. 鼠标悬停时的效果（可选，保持一点交互感） */
 #aside-content .card-tag-cloud a:hover {
-  color: #49b1f5 !important; /* Butterfly 经典的蓝色，你也可以换成自己喜欢的主题色 */
+  color: #41e4f6 !important; /* Butterfly 经典的蓝色，你也可以换成自己喜欢的主题色 */
 }
 
 
