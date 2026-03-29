@@ -3,10 +3,10 @@
    ========================================================= */
 
 :root {
-  --trans-light: rgba(255, 255, 255, 0.4); /* 日间模式透明度 */
-  --trans-dark: rgba(25, 25, 25, 0.4);     /* 夜间模式透明度 */
+  --trans-light: rgba(255, 255, 255, 0.7); /* 日间模式透明度 */
+  --trans-dark: rgba(30, 30, 30, 0.4);     /* 夜间模式透明度 */
   --border-style: 1px solid rgba(169, 169, 169, 0.5);
-  --backdrop-filter: blur(5px) saturate(150%);
+  --backdrop-filter: blur(5px) brightness(1.20) saturate(150%);
 }
 
 /* ================= 1. 打通底层透明通道 ================= */
@@ -24,17 +24,26 @@
 .recent-posts .recent-post-item {
   background: var(--trans-light) !important;
   backdrop-filter: var(--backdrop-filter) !important;
-  border-radius: 25px !important;
+  border-radius: 20px !important;
+
   overflow: hidden !important;
+
   /* 丢弃 border，使用 inset 内阴影彻底封死亚像素漏色 Bug */
-  border: none !important;
+  /*border: none !important;
   box-shadow: inset 0 0 0 1px rgba(169, 169, 169, 0.4) !important;
-  
+  */
   /* Flexbox 强制拉伸，填满上下边缘 */
+  /*
   display: flex !important;
   align-items: stretch !important;
   justify-content: space-between !important;
   padding: 0 !important;
+  */
+  
+  background-image: linear-gradient(135deg, 
+    #7abaff4D, 
+    #c1fafb4D
+  ) !important; 
 }
 
 /* 首页侧栏卡片 */
@@ -62,16 +71,19 @@ div#post, div#page, div#archive {
 /* ================= 3. 首页文章卡片（图片与缝隙修复） ================= */
 
 /* 文字容器：无限膨胀，挤压一切多余缝隙 */
+/*
 .recent-post-item .recent-post-info {
   background: transparent !important;
   flex: 1 !important; 
 
   display: flex !important;
-  flex-direction: column !important; /* 让标题、摘要等元素上下垂直排列 */
-  justify-content: center !important; /* 核心：垂直方向绝对居中！ */
+  flex-direction: column !important; 
+  justify-content: center !important;
 }
+*/
 
 /* 图片外层容器：配合父级拉伸，强制透明 */
+/*
 .recent-post-item .post_cover {
   align-self: stretch !important; 
   height: 100% !important; 
@@ -80,15 +92,19 @@ div#post, div#page, div#archive {
   padding: 0 !important;
   flex-shrink: 0 !important;
 }
+*/
 
 /* 仅在电脑端限制图片宽度为 45%，防止手机端排版崩塌 */
+/*
 @media screen and (min-width: 768px) {
   .recent-post-item .post_cover {
     width: 45% !important; 
   }
 }
+*/
 
 /* A 标签链接层：完全撑开 */
+/*
 .recent-post-item .post_cover a {
   display: block !important;
   width: 100% !important;
@@ -97,8 +113,11 @@ div#post, div#page, div#archive {
   padding: 0 !important;
   background: transparent !important;
 }
+*/
+
 
 /* 图片本身：完美填充，干掉 SVG 矢量图自带底色 */
+/*
 .recent-post-item .post_cover img.post-bg {
   display: block !important;
   width: 100% !important;
@@ -109,11 +128,33 @@ div#post, div#page, div#archive {
   padding: 0 !important;
   transform: none !important; 
 }
-
+*/
 /* 封死左右排版时的中间“三八线”亚像素缝隙 */
+/*
 .recent-post-item .post_cover.left { margin-right: -1px !important; }
 .recent-post-item .post_cover.right { margin-left: -1px !important; margin-right: 0 !important; }
+*/
 
+/* 仅针对文章正文中的链接 */
+#article-container a {
+  color: #007bff !important;
+  border-bottom: 1px solid #007bff; /* 给链接加个底边框，更有质感 */
+  padding-bottom: 1px;
+}
+
+#article-container a:hover {
+  color: #ff5722 !important;
+  border-bottom-color: #ff5722;
+}
+
+
+
+
+
+[data-theme="dark"] #recent-posts .recent-post-item {
+  /*box-shadow: inset 0 0 0 1px rgba(169, 169, 169, 0.4) !important;*/
+  border: var(--border-style);
+}
 /* ================= 4. 黑夜模式 (Dark Mode) ================= */
 /* 修复了之前带有 > 符号导致黑夜模式失效的 Bug */
 [data-theme="dark"] #recent-posts .recent-post-item,
@@ -148,7 +189,6 @@ div#post, div#page, div#archive {
   color: #ffffff;
 }
 
-
 /* 1. 日间模式：强制使用深色（或主题色），并稍微加粗增加辨识度 */
 /*
 #aside-content .card-tag-cloud a {
@@ -159,6 +199,20 @@ div#post, div#page, div#archive {
 /* 2. 鼠标悬停时的效果（可选，保持一点交互感） */
 #aside-content .card-tag-cloud a:hover {
   color: #41e4f6 !important; /* Butterfly 经典的蓝色，你也可以换成自己喜欢的主题色 */
+  transform: scale(1.1);
+}
+
+/* 全局提亮标签云文字 */
+#aside-content .card-tag-cloud a {
+  /* 1. 强制统一颜色为较深的灰色或黑色（白天模式） */
+  /*color: #333 !important; */
+  filter: brightness(1.4) saturate(1.1) !important;
+  /* 2. 稍微加粗，防止细字体在模糊背景下“虚掉” */
+  font-weight: 500 !important;
+  /* 3. 核心：加一个非常淡的白色外发光，像给文字描了边 */
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.5) !important;
+  /* 4. 这里的过度动画让鼠标悬停时更平滑 */
+  transition: all 0.3s;
 }
 
 
@@ -185,3 +239,4 @@ div#post, div#page, div#archive {
 [data-theme="dark"] #page-header::before {
   background: transparent !important;
 }
+
